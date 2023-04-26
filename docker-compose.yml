@@ -1,6 +1,19 @@
 version: '3'
 services:
-  
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "/etc/nginx/vhost.d"
+      - "/usr/share/nginx/html"
+      - "/var/run/docker.sock:/tmp/docker.sock:ro"
+      - "/etc/nginx/certs"
+    networks:
+      - proxy-tier 
+      
   mongo:
     image: mongo:3.6
     restart: always
@@ -12,8 +25,10 @@ services:
   backoffice:
     image: albieta/backoffice_ea:1.0.5
     restart: always
-    ports: 
-      - "80:80"
+    environment:
+      - VIRTUAL_HOST=147.83.7.156:80
+    networks:
+      - proxy-tier
  
   backend:
     image: albieta/backend_ea:1.0.4
@@ -24,8 +39,10 @@ services:
       - mongo
     environment:
       - DB_URI=mongodb://mongo:27017/bridgetobelong
+      - VIRTUAL_HOST=147.83.7.156:443
     networks:
       - db-tier
+      - proxy-tier
 
 volumes:
   mongo-data:
@@ -33,4 +50,6 @@ volumes:
 
 networks:
   db-tier:
+    driver: bridge
+  proxy-tier:
     driver: bridge
