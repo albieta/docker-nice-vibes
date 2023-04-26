@@ -10,7 +10,7 @@ services:
       - db-tier
       
   backoffice:
-    image: albieta/backoffice_ea:1.0.4
+    image: albieta/backoffice_ea:1.0.5
     restart: always
     ports: 
       - "80:80"
