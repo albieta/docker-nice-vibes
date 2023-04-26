@@ -1,0 +1,36 @@
+version: '3'
+services:
+
+  mongo:
+    image: mongo:3.6
+    restart: always
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - db-tier
+      
+  backoffice:
+    image: albieta/backoffice_ea:1.0.3
+    restart: always
+    ports: 
+      - "80:80"
+ 
+  backend:
+    image: albieta/backend_ea:1.0.4
+    restart: always
+    ports: 
+      - "4002:4002"
+    depends_on:
+      - mongo
+    environment:
+      - DB_URI=${DB_URI}
+    networks:
+      - db-tier
+
+volumes:
+  mongo-data:
+    driver: local
+
+networks:
+  db-tier:
+    driver: bridge
