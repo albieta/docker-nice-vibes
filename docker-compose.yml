@@ -23,7 +23,7 @@ services:
     depends_on:
       - mongo
     environment:
-      - DB_URI=${DB_URI}
+      - DB_URI=mongodb://mongo:27017/bridgetobelong
     networks:
       - db-tier
 
