@@ -26,15 +26,7 @@ services:
     image: albieta/backoffice_ea:1.0.5
     restart: always
     environment:
-      - VIRTUAL_HOST=147.83.7.156/backoffice
-    networks:
-      - proxy-tier
-      
-  backoffice-red:
-    image: albieta/backoffice_ea:0.0.1
-    restart: always
-    environment:
-      - VIRTUAL_HOST=147.83.7.156/backoffice-red
+      - VIRTUAL_HOST=147.83.7.156
     networks:
       - proxy-tier
  
