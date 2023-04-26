@@ -26,7 +26,7 @@ services:
     image: albieta/backoffice_ea:1.0.5
     restart: always
     environment:
-      - VIRTUAL_HOST=bridge2belong.cat
+      - VIRTUAL_HOST=147.83.7.156
     networks:
       - proxy-tier
  
