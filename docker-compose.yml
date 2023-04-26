@@ -1,6 +1,6 @@
 version: '3'
 services:
-      
+  
   mongo:
     image: mongo:3.6
     restart: always
@@ -12,6 +12,8 @@ services:
   backoffice:
     image: albieta/backoffice_ea:1.0.5
     restart: always
+    ports: 
+      - "80:80"
  
   backend:
     image: albieta/backend_ea:1.0.4
