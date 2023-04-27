@@ -23,18 +23,18 @@ services:
       - db-tier
       
   backoffice:
-    image: albieta/backoffice_ea:1.0.5
+    image: albieta/backoffice_ea:1.0.6
     restart: always
     environment:
-      - VIRTUAL_HOST=147.83.7.156
+      - VIRTUAL_HOST=backoffice.bridge2belong
     networks:
       - proxy-tier
  
   backend:
-    image: albieta/backend_ea:1.0.4
+    image: albieta/backend_ea:1.0.5
     restart: always
-    ports: 
-      - "4002:4002"
+    environment:
+      - VIRTUAL_HOST=api.bridge2belong.cat
     depends_on:
       - mongo
     environment:
