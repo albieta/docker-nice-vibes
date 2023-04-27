@@ -19,11 +19,9 @@ services:
     container_name: letsencrypt-nginx-proxy-companion
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "/etc/nginx/certs"
-      - "/etc/nginx/vhost.d"
-      - "/usr/share/nginx/html"
-    depends_on:
-      - nginx-proxy
+      
+   volumes_from:
+      - "nginx-proxy"
     networks:
       - proxy-tier
   
@@ -36,7 +34,7 @@ services:
       - db-tier
       
   backoffice:
-    image: albieta/backoffice_ea:1.0.8
+    image: albieta/backoffice_ea:1.0.7
     restart: always
     environment:
       - VIRTUAL_HOST=backoffice.bridge2belong.cat
