@@ -1,4 +1,4 @@
-version: '3'
+version: '2'
 services:
 
   nginx-proxy:
@@ -7,10 +7,10 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - "/etc/nginx/vhost.d"
-      - "/usr/share/nginx/html"
+      - "vhost:/etc/nginx/vhost.d"
+      - "html:/usr/share/nginx/html"
       - "/var/run/docker.sock:/tmp/docker.sock:ro"
-      - "/etc/nginx/certs"
+      - "certs:/etc/nginx/certs"
     networks:
       - proxy-tier 
 
@@ -19,11 +19,8 @@ services:
     container_name: letsencrypt-nginx-proxy-companion
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "/etc/nginx/certs"
-      - "/etc/nginx/vhost.d"
-      - "/usr/share/nginx/html"
-    depends_on:
-      - nginx-proxy
+    volumes_from:
+      - "nginx-proxy"
     networks:
       - proxy-tier
   
@@ -31,17 +28,17 @@ services:
     image: mongo:3.6
     restart: always
     volumes:
-      - mongo-data:/data/db
+      - mongo-data:/data/db      
     networks:
       - db-tier
       
   backoffice:
-    image: albieta/backoffice_ea:1.0.8
+    image: albieta/backoffice_ea:1.1.1
     restart: always
     environment:
-      - VIRTUAL_HOST=backoffice.bridge2belong.cat
-      - CERT_NAME=backoffice.bridge2belong.cat
-      - LETSENCRYPT_HOST=backoffice.bridge2belong.cat
+      - VIRTUAL_HOST=backoffice.pagia.bridge2belong.cat
+      - CERT_NAME=backoffice.pagia.bridge2belong.cat
+      - LETSENCRYPT_HOST=backoffice.pagia.bridge2belong.cat
       - LETSENCRYPT_EMAIL=albaromagomez@gmail.com
     networks:
       - proxy-tier
@@ -50,9 +47,9 @@ services:
     image: albieta/backend_ea:1.1.0
     restart: always
     environment:
-      - VIRTUAL_HOST=api.bridge2belong.cat
-      - CERT_NAME=api.bridge2belong.cat
-      - LETSENCRYPT_HOST=api.bridge2belong.cat
+      - VIRTUAL_HOST=api.pagia.bridge2belong.cat
+      - CERT_NAME=api.pagia.bridge2belong.cat
+      - LETSENCRYPT_HOST=api.pagia.bridge2belong.cat
       - LETSENCRYPT_EMAIL=albaromagomez@gmail.com
       - DB_URI=mongodb://mongo:27017/bridgetobelong
     depends_on: 
@@ -64,6 +61,9 @@ services:
 volumes:
   mongo-data:
     driver: local
+  vhost:
+  certs: 
+  html:
 
 networks:
   db-tier:
