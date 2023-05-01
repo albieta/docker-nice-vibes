@@ -42,6 +42,17 @@ services:
       - LETSENCRYPT_EMAIL=albaromagomez@gmail.com
     networks:
       - proxy-tier
+      
+  web:
+    image: albieta/web_ea:0.0.1
+    restart: always
+    environment:
+      - VIRTUAL_HOST=www.bridge2belong.cat
+      - CERT_NAME=www.bridge2belong.cat
+      - LETSENCRYPT_HOST=www.bridge2belong.cat
+      - LETSENCRYPT_EMAIL=albaromagomez@gmail.com
+    networks:
+      - proxy-tier
  
   backend:
     image: albieta/backend_ea:1.1.0
